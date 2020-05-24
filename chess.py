@@ -2,3 +2,4 @@
 
 from graphics import *
 
+print("hello this is chess")
