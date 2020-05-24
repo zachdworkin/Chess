@@ -3,3 +3,5 @@
 from graphics import *
 
 print("hello this is chess")
+print("test")
+print("test")
