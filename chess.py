@@ -8,12 +8,4 @@ to update master github branch
 from graphics import *
 from g_interface import *
 
-win = GraphWin()
-def create_board(state):
-    cir = Circle(Point(100,50), 25)
-    cir.draw(win)
-    win.getMouse()
-    return 0
 
-create_board(1)
-win.close()
