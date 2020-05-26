@@ -28,11 +28,3 @@ Possibility for Pieces:
 
 from graphics import *
 from g_interface import *
-
-class King:
-
-    def __init__(location, self):
-        self.location = location
-
-    def possible_moves(self):#returns a list of possible move locations
-
