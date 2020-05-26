@@ -7,8 +7,8 @@ PLAN
 Methods:
     Location (row,column) = (0-7, 0-7)
         create:
-            is_legal_move(args)
-            possible_moves(args)
+            is_legal_move(args) = check if it is moving through an enemy, on your team, or empty spot, etc
+            possible_moves(args) = all possible moves even if they are not legal (must be on board)
     Pieces
         classes, dictionary, hard code?
     Team
@@ -18,8 +18,9 @@ Possibility for Pieces:
 
     class King:
 
-        def __init__(location, self):
+        def __init__(location, team, self):
             self.location = location
+            self.team = team
 
         def possible_moves(self):#returns a list of possible move locations
 
