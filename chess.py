@@ -30,6 +30,14 @@ Possibility for Pieces:
 from graphics import *
 from g_interface import *
 
+#
+# Make the is_on_board() function here that can get called by all of the classes
+# @param moves, a list of all possible moves,
+# this function returns the moves that are on the board and does not modify the original possible moves variable
+# def is_on_board(moves):
+#
+#
+
 
 class King:
 
@@ -48,9 +56,12 @@ class King:
         self.possible_moves.append((self.location[0] - 1, self.location[1] + 0))
         self.possible_moves.append((self.location[0] - 1, self.location[1] - 1))
 
+        # Make this into a separate function that finds all  legal moves:
+            # this funcion is giong to call two other functions, possible_moves, and is_on_board
         while self.possible_moves:
             all_good = True
             for i in range(len(self.possible_moves)):
+                # checking if it is on the board
                 if self.possible_moves[i][0] < 0 or self.possible_moves[i][1] < 0 or self.possible_moves[i][0] > 7 or self.possible_moves[i][1] > 7:
                     self.possible_moves.pop(i)
                     all_good = False
