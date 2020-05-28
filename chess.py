@@ -56,23 +56,22 @@ class King:
         self.possible_moves.append((self.location[0] - 1, self.location[1] + 0))
         self.possible_moves.append((self.location[0] - 1, self.location[1] - 1))
 
-        # Make this into a separate function that finds all  legal moves:
-            # this funcion is giong to call two other functions, possible_moves, and is_on_board
-        while self.possible_moves:
-            all_good = True
-            for i in range(len(self.possible_moves)):
-                # checking if it is on the board
-                if self.possible_moves[i][0] < 0 or self.possible_moves[i][1] < 0 or self.possible_moves[i][0] > 7 or self.possible_moves[i][1] > 7:
-                    self.possible_moves.pop(i)
-                    all_good = False
-                    break
+        self.possible_moves = is_on_board(self.possible_moves)
 
-            if all_good:
-                break
-
-        self.possible_moves.sort(reverse = False)
+        self.possible_moves.sort(reverse=False)
 
         return self.possible_moves
+
+    def legal_moves(self):
+        self.legal_moves = []
+        possible_moves = self.possible_moves()
+
+        for i in range(len(possible_moves)):
+            if square_is_open(self.team, possible_moves[i]) and path_is_clear(self.location, possible_moves[i]):
+                self.legal_moves.append(possible_moves[i])
+
+        return self.legal_moves
+
 
 class Queen:
 
@@ -92,20 +91,20 @@ class Queen:
             self.possible_moves.append((self.location[0] + 0, self.location[1] + i))
             self.possible_moves.append((self.location[0] + 0, self.location[1] - i))
 
-        while self.possible_moves:
-            all_good = True
-            for i in range(len(self.possible_moves)):
-                if self.possible_moves[i][0] < 0 or self.possible_moves[i][1] < 0 or self.possible_moves[i][0] > 7 or self.possible_moves[i][1] > 7:
-                    self.possible_moves.pop(i)
-                    all_good = False
-                    break
-
-            if all_good:
-                break
-
-        self.possible_moves.sort(reverse = False)
+        self.possible_moves = is_on_board(self.possible_moves)
 
         return self.possible_moves
+
+    def legal_moves(self):
+        self.legal_moves = []
+        possible_moves = self.possible_moves()
+
+        for i in range(len(possible_moves)):
+            if square_is_open(self.team, possible_moves[i]) and path_is_clear(self.location, possible_moves[i]):
+                self.legal_moves.append(possible_moves[i])
+
+        return self.legal_moves
+
 
 class Knight:
 
@@ -124,20 +123,22 @@ class Knight:
         self.possible_moves.append((self.location[0] - 2, self.location[1] + 1))
         self.possible_moves.append((self.location[0] - 2, self.location[1] - 1))
 
-        while self.possible_moves:
-            all_good = True
-            for i in range(len(self.possible_moves)):
-                if self.possible_moves[i][0] < 0 or self.possible_moves[i][1] < 0 or self.possible_moves[i][0] > 7 or self.possible_moves[i][1] > 7:
-                    self.possible_moves.pop(i)
-                    all_good = False
-                    break
+        self.possible_moves = is_on_board(self.possible_moves)
 
-            if all_good:
-                break
-
-        self.possible_moves.sort(reverse = False)
+        self.possible_moves.sort(reverse=False)
 
         return self.possible_moves
+
+    def legal_moves(self):
+        self.legal_moves = []
+        possible_moves = self.possible_moves()
+
+        for i in range(len(possible_moves)):
+            if square_is_open(self.team, possible_moves[i]) and path_is_clear(self.location, possible_moves[i]):
+                self.legal_moves.append(possible_moves[i])
+
+        return self.legal_moves
+
 
 class Rook:
 
@@ -153,20 +154,22 @@ class Rook:
             self.possible_moves.append((self.location[0], self.location[1] + i))
             self.possible_moves.append((self.location[0], self.location[1] - i))
 
-        while self.possible_moves:
-            all_good = True
-            for i in range(len(self.possible_moves)):
-                if self.possible_moves[i][0] < 0 or self.possible_moves[i][1] < 0 or self.possible_moves[i][0] > 7 or self.possible_moves[i][1] > 7:
-                    self.possible_moves.pop(i)
-                    all_good = False
-                    break
+        self.possible_moves = is_on_board(self.possible_moves)
 
-            if all_good:
-                break
-
-        self.possible_moves.sort(reverse = False)
+        self.possible_moves.sort(reverse=False)
 
         return self.possible_moves
+
+    def legal_moves(self):
+        self.legal_moves = []
+        possible_moves = self.possible_moves()
+
+        for i in range(len(possible_moves)):
+            if square_is_open(self.team, possible_moves[i]) and path_is_clear(self.location, possible_moves[i]):
+                self.legal_moves.append(possible_moves[i])
+
+        return self.legal_moves
+
 
 class Bishop:
 
@@ -182,20 +185,20 @@ class Bishop:
             self.possible_moves.append((self.location[0] - i, self.location[1] + i))
             self.possible_moves.append((self.location[0] - i, self.location[1] - i))
 
-        while self.possible_moves:
-            all_good = True
-            for i in range(len(self.possible_moves)):
-                if self.possible_moves[i][0] < 0 or self.possible_moves[i][1] < 0 or self.possible_moves[i][0] > 7 or self.possible_moves[i][1] > 7:
-                    self.possible_moves.pop(i)
-                    all_good = False
-                    break
-
-            if all_good:
-                break
-
-        self.possible_moves.sort(reverse = False)
+        self.possible_moves = is_on_board(self.possible_moves)
 
         return self.possible_moves
+
+    def legal_moves(self):
+        self.legal_moves = []
+        possible_moves = self.possible_moves()
+
+        for i in range(len(possible_moves)):
+            if square_is_open(self.team, possible_moves[i]) and path_is_clear(self.location, possible_moves[i]):
+                self.legal_moves.append(possible_moves[i])
+
+        return self.legal_moves
+
 
 class Pawn:
 
@@ -218,20 +221,14 @@ class Pawn:
             self.possible_moves.append((self.location[0] - 1, self.location[1] - 1))
             self.possible_moves.append((self.location[0] - 1, self.location[1] + 1))
 
-        while self.possible_moves:
-            all_good = True
-            for i in range(len(self.possible_moves)):
-                if self.possible_moves[i][0] < 0 or self.possible_moves[i][1] < 0 or self.possible_moves[i][0] > 7 or self.possible_moves[i][1] > 7:
-                    self.possible_moves.pop(i)
-                    all_good = False
-                    break
-
-            if all_good:
-                break
-
-        self.possible_moves.sort(reverse = False)
+        self.possible_moves = is_on_board(self.possible_moves)
 
         return self.possible_moves
+
+    def legal_moves(self):
+        pass
+        # still have to work on this code for pawns
+
 
 white_rook1 = Rook("white", (0, 0))
 white_knight1 = Knight("white", (0, 1))
@@ -251,7 +248,6 @@ white_pawn5 = Pawn("white", (1, 5))
 white_pawn6 = Pawn("white", (1, 6))
 white_pawn7 = Pawn("white", (1, 7))
 
-
 black_rook1 = Rook("black", (7, 0))
 black_knight1 = Rook("black", (7, 1))
 black_bishop1 = Rook("black", (7, 2))
@@ -270,46 +266,211 @@ black_pawn5 = Pawn("black", (6, 5))
 black_pawn6 = Pawn("black", (6, 6))
 black_pawn7 = Pawn("black", (6, 7))
 
-def white_squares_occupied():
-    white_squares_occupied = []
-    white_squares_occupied.append(white_rook1.location)
-    white_squares_occupied.append(white_rook2.location)
-    white_squares_occupied.append(white_knight1.location)
-    white_squares_occupied.append(white_knight2.location)
-    white_squares_occupied.append(white_bishop1.location)
-    white_squares_occupied.append(white_bishop2.location)
-    white_squares_occupied.append(white_queen.location)
-    white_squares_occupied.append(white_king.location)
-    white_squares_occupied.append(white_pawn0.location)
-    white_squares_occupied.append(white_pawn1.location)
-    white_squares_occupied.append(white_pawn2.location)
-    white_squares_occupied.append(white_pawn3.location)
-    white_squares_occupied.append(white_pawn4.location)
-    white_squares_occupied.append(white_pawn5.location)
-    white_squares_occupied.append(white_pawn6.location)
-    white_squares_occupied.append(white_pawn7.location)
-    white_squares_occupied.sort(reverse=True)
-    return white_squares_occupied
 
-def black_squares_occupied():
-    black_squares_occupied = []
-    black_squares_occupied.append(black_rook1.location)
-    black_squares_occupied.append(black_rook2.location)
-    black_squares_occupied.append(black_knight1.location)
-    black_squares_occupied.append(black_knight2.location)
-    black_squares_occupied.append(black_bishop1.location)
-    black_squares_occupied.append(black_bishop2.location)
-    black_squares_occupied.append(black_queen.location)
-    black_squares_occupied.append(black_king.location)
-    black_squares_occupied.append(black_pawn0.location)
-    black_squares_occupied.append(black_pawn1.location)
-    black_squares_occupied.append(black_pawn2.location)
-    black_squares_occupied.append(black_pawn3.location)
-    black_squares_occupied.append(black_pawn4.location)
-    black_squares_occupied.append(black_pawn5.location)
-    black_squares_occupied.append(black_pawn6.location)
-    black_squares_occupied.append(black_pawn7.location)
-    black_squares_occupied.sort(reverse=True)
-    return black_squares_occupied
+def square_is_open(team, location):
+    def white_squares_occupied():
+        white_squares_occupied = []
+        white_squares_occupied.append(white_rook1.location)
+        white_squares_occupied.append(white_rook2.location)
+        white_squares_occupied.append(white_knight1.location)
+        white_squares_occupied.append(white_knight2.location)
+        white_squares_occupied.append(white_bishop1.location)
+        white_squares_occupied.append(white_bishop2.location)
+        white_squares_occupied.append(white_queen.location)
+        white_squares_occupied.append(white_king.location)
+        white_squares_occupied.append(white_pawn0.location)
+        white_squares_occupied.append(white_pawn1.location)
+        white_squares_occupied.append(white_pawn2.location)
+        white_squares_occupied.append(white_pawn3.location)
+        white_squares_occupied.append(white_pawn4.location)
+        white_squares_occupied.append(white_pawn5.location)
+        white_squares_occupied.append(white_pawn6.location)
+        white_squares_occupied.append(white_pawn7.location)
+        return white_squares_occupied
+
+    def black_squares_occupied():
+        black_squares_occupied = []
+        black_squares_occupied.append(black_rook1.location)
+        black_squares_occupied.append(black_rook2.location)
+        black_squares_occupied.append(black_knight1.location)
+        black_squares_occupied.append(black_knight2.location)
+        black_squares_occupied.append(black_bishop1.location)
+        black_squares_occupied.append(black_bishop2.location)
+        black_squares_occupied.append(black_queen.location)
+        black_squares_occupied.append(black_king.location)
+        black_squares_occupied.append(black_pawn0.location)
+        black_squares_occupied.append(black_pawn1.location)
+        black_squares_occupied.append(black_pawn2.location)
+        black_squares_occupied.append(black_pawn3.location)
+        black_squares_occupied.append(black_pawn4.location)
+        black_squares_occupied.append(black_pawn5.location)
+        black_squares_occupied.append(black_pawn6.location)
+        black_squares_occupied.append(black_pawn7.location)
+        return black_squares_occupied
+
+    square_is_open = True
+    if team == "white":
+        if location in white_squares_occupied():
+            square_is_open = False
+
+    if team == "black":
+        if location in black_squares_occupied():
+            square_is_open = False
+
+    if team == "both":
+        if location in white_squares_occupied() or location in black_squares_occupied():
+            square_is_open = False
+
+    return square_is_open
+
+
+def is_on_board(possible_moves):
+    while possible_moves:
+        all_good = True
+        for i in range(len(possible_moves)):
+            if possible_moves[i][0] < 0 or possible_moves[i][1] < 0 or possible_moves[i][0] > 7 or possible_moves[i][
+                1] > 7:
+                possible_moves.pop(i)
+                all_good = False
+                break
+
+        if all_good:
+            break
+
+    return possible_moves
+
+
+def path_is_clear(starting_location, ending_location):
+    path_is_clear = True
+
+    for i in range(1, 9):
+
+        if starting_location[0] + i == ending_location[0] and starting_location[1] == ending_location[1]:
+
+            intermediate_location = (starting_location[0] + 1, starting_location[1])
+
+            while intermediate_location[0] != ending_location[0]:
+
+                if not square_is_open("both", intermediate_location):
+                    path_is_clear = False
+                    break
+
+                intermediate_location1 = (intermediate_location[0] + 1, intermediate_location[1])
+                intermediate_location = intermediate_location1
+
+            break
+
+        elif starting_location[0] - i == ending_location[0] and starting_location[1] == ending_location[1]:
+
+            intermediate_location = (starting_location[0] - 1, starting_location[1])
+
+            while intermediate_location[0] != ending_location[0]:
+
+                if not square_is_open("both", intermediate_location):
+                    path_is_clear = False
+                    break
+
+                intermediate_location1 = (intermediate_location[0] - 1, intermediate_location[1])
+                intermediate_location = intermediate_location1
+
+            break
+
+        elif starting_location[0] == ending_location[0] and starting_location[1] + 1 == ending_location[1]:
+
+            intermediate_location = (starting_location[0], starting_location[1] + 1)
+
+            while intermediate_location[1] != ending_location[1]:
+
+                if not square_is_open("both", intermediate_location):
+                    path_is_clear = False
+                    break
+
+                intermediate_location1 = (intermediate_location[0], intermediate_location[1] + 1)
+                intermediate_location = intermediate_location1
+
+            break
+
+        elif starting_location[0] == ending_location[0] and starting_location[1] - i == ending_location[1]:
+
+            intermediate_location = (starting_location[0], starting_location[1] - 1)
+
+            while intermediate_location[1] != ending_location[1]:
+
+                if not square_is_open("both", intermediate_location):
+                    path_is_clear = False
+                    break
+
+                intermediate_location1 = (intermediate_location[0], intermediate_location[1] - 1)
+                intermediate_location = intermediate_location1
+
+            break
+
+        elif starting_location[0] + i == ending_location[0] and starting_location[1] + i == ending_location[1]:
+
+            intermediate_location = (starting_location[0] + 1, starting_location[1] + 1)
+
+            while intermediate_location[0] != ending_location[0] and intermediate_location[1] != ending_location[1]:
+
+                if not square_is_open("both", intermediate_location):
+                    path_is_clear = False
+                    break
+
+                intermediate_location1 = (intermediate_location[0] + 1, intermediate_location[1] + 1)
+                intermediate_location = intermediate_location1
+
+            break
+
+        elif starting_location[0] + i == ending_location[0] and starting_location[1] - i == ending_location[1]:
+
+            intermediate_location = (starting_location[0] + 1, starting_location[1] - 1)
+
+            while intermediate_location[0] != ending_location[0] and intermediate_location[1] != ending_location[1]:
+
+                if not square_is_open("both", intermediate_location):
+                    path_is_clear = False
+                    break
+
+                intermediate_location1 = (intermediate_location[0] + 1, intermediate_location[1] - 1)
+                intermediate_location = intermediate_location1
+
+            break
+
+        elif starting_location[0] - i == ending_location[0] and starting_location[1] + i == ending_location[1]:
+
+            intermediate_location = (starting_location[0] - 1, starting_location[1] + 1)
+
+            while intermediate_location[0] != ending_location[0] and intermediate_location[1] != ending_location[1]:
+
+                if not square_is_open("both", intermediate_location):
+                    path_is_clear = False
+                    break
+
+                intermediate_location1 = (intermediate_location[0] - 1, intermediate_location[1] + 1)
+                intermediate_location = intermediate_location1
+
+            break
+
+        elif starting_location[0] - i == ending_location[0] and starting_location[1] - i == ending_location[1]:
+
+            intermediate_location = (starting_location[0] - 1, starting_location[1] - 1)
+
+            while intermediate_location[0] != ending_location[0] and intermediate_location[1] != ending_location[1]:
+
+                if not square_is_open("both", intermediate_location):
+                    path_is_clear = False
+                    break
+
+                intermediate_location1 = (intermediate_location[0] - 1, intermediate_location[1] - 1)
+                intermediate_location = intermediate_location1
+
+            break
+
+    return path_is_clear
+
+
+print(white_bishop2.legal_moves())
+
+
+
 
 
