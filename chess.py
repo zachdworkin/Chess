@@ -134,7 +134,7 @@ class Knight:
         possible_moves = self.possible_moves()
 
         for i in range(len(possible_moves)):
-            if square_is_open(self.team, possible_moves[i]) and path_is_clear(self.location, possible_moves[i]):
+            if square_is_open(self.team, possible_moves[i]):
                 self.legal_moves.append(possible_moves[i])
 
         return self.legal_moves
@@ -208,14 +208,15 @@ class Pawn:
 
     def possible_moves(self):
         self.possible_moves = []
+        team = self.team
 
-        if self.team == "white":
+        if team == "white":
             self.possible_moves.append((self.location[0] + 1, self.location[1] + 0))
             self.possible_moves.append((self.location[0] + 2, self.location[1] + 0))
             self.possible_moves.append((self.location[0] + 1, self.location[1] - 1))
             self.possible_moves.append((self.location[0] + 1, self.location[1] + 1))
 
-        elif self.team == "black":
+        elif team == "black":
             self.possible_moves.append((self.location[0] - 1, self.location[1] + 0))
             self.possible_moves.append((self.location[0] - 2, self.location[1] + 0))
             self.possible_moves.append((self.location[0] - 1, self.location[1] - 1))
@@ -225,9 +226,35 @@ class Pawn:
 
         return self.possible_moves
 
+    def is_on_starting_square(self):
+        is_on_starting_square = False
+        team = self.team
+
+        if team == "white":
+            if self.location[0] == 1:
+                is_on_starting_square = True
+
+        if team == "black":
+            if self.location[0] == 6:
+                is_on_starting_square = True
+
+        return is_on_starting_square
+
     def legal_moves(self):
-        pass
-        # still have to work on this code for pawns
+        self.legal_moves = []
+        possible_moves = self.possible_moves()
+        is_on_starting_square = self.is_on_starting_square()
+
+        if is_on_starting_square and path_is_clear(self.location, possible_moves[1]):
+            self.legal_moves.append(possible_moves[1])
+
+        possible_moves.pop(1)
+
+        for i in range(len(possible_moves)):
+            if square_is_open(self.team, possible_moves[i]) and path_is_clear(self.location, possible_moves[i]):
+                self.legal_moves.append(possible_moves[i])
+
+        return self.legal_moves
 
 
 white_rook1 = Rook("white", (0, 0))
@@ -240,7 +267,7 @@ white_knight2 = Knight("white", (0, 6))
 white_rook2 = Rook("white", (0, 7))
 
 white_pawn0 = Pawn("white", (1, 0))
-white_pawn1 = Pawn("white", (1, 1))
+white_pawn1 = Pawn("white", (1w, 0))
 white_pawn2 = Pawn("white", (1, 2))
 white_pawn3 = Pawn("white", (1, 3))
 white_pawn4 = Pawn("white", (1, 4))
@@ -358,6 +385,10 @@ def path_is_clear(starting_location, ending_location):
                 intermediate_location1 = (intermediate_location[0] + 1, intermediate_location[1])
                 intermediate_location = intermediate_location1
 
+            if intermediate_location[0] == ending_location[0]:
+                if not square_is_open("both", (intermediate_location[0], intermediate_location[1])):
+                    path_is_clear = False
+
             break
 
         elif starting_location[0] - i == ending_location[0] and starting_location[1] == ending_location[1]:
@@ -372,6 +403,10 @@ def path_is_clear(starting_location, ending_location):
 
                 intermediate_location1 = (intermediate_location[0] - 1, intermediate_location[1])
                 intermediate_location = intermediate_location1
+
+            if intermediate_location[0] == ending_location[0]:
+                if not square_is_open("both", (intermediate_location[0], intermediate_location[1])):
+                    path_is_clear = False
 
             break
 
@@ -388,6 +423,10 @@ def path_is_clear(starting_location, ending_location):
                 intermediate_location1 = (intermediate_location[0], intermediate_location[1] + 1)
                 intermediate_location = intermediate_location1
 
+            if intermediate_location[0] == ending_location[0]:
+                if not square_is_open("both", (intermediate_location[0], intermediate_location[1])):
+                    path_is_clear = False
+
             break
 
         elif starting_location[0] == ending_location[0] and starting_location[1] - i == ending_location[1]:
@@ -402,6 +441,10 @@ def path_is_clear(starting_location, ending_location):
 
                 intermediate_location1 = (intermediate_location[0], intermediate_location[1] - 1)
                 intermediate_location = intermediate_location1
+
+            if intermediate_location[0] == ending_location[0]:
+                if not square_is_open("both", (intermediate_location[0], intermediate_location[1])):
+                    path_is_clear = False
 
             break
 
@@ -418,6 +461,10 @@ def path_is_clear(starting_location, ending_location):
                 intermediate_location1 = (intermediate_location[0] + 1, intermediate_location[1] + 1)
                 intermediate_location = intermediate_location1
 
+            if intermediate_location[0] == ending_location[0]:
+                if not square_is_open("both", (intermediate_location[0], intermediate_location[1])):
+                    path_is_clear = False
+
             break
 
         elif starting_location[0] + i == ending_location[0] and starting_location[1] - i == ending_location[1]:
@@ -432,6 +479,10 @@ def path_is_clear(starting_location, ending_location):
 
                 intermediate_location1 = (intermediate_location[0] + 1, intermediate_location[1] - 1)
                 intermediate_location = intermediate_location1
+
+            if intermediate_location[0] == ending_location[0]:
+                if not square_is_open("both", (intermediate_location[0], intermediate_location[1])):
+                    path_is_clear = False
 
             break
 
@@ -448,6 +499,10 @@ def path_is_clear(starting_location, ending_location):
                 intermediate_location1 = (intermediate_location[0] - 1, intermediate_location[1] + 1)
                 intermediate_location = intermediate_location1
 
+            if intermediate_location[0] == ending_location[0]:
+                if not square_is_open("both", (intermediate_location[0], intermediate_location[1])):
+                    path_is_clear = False
+
             break
 
         elif starting_location[0] - i == ending_location[0] and starting_location[1] - i == ending_location[1]:
@@ -463,13 +518,13 @@ def path_is_clear(starting_location, ending_location):
                 intermediate_location1 = (intermediate_location[0] - 1, intermediate_location[1] - 1)
                 intermediate_location = intermediate_location1
 
+            if intermediate_location[0] == ending_location[0]:
+                if not square_is_open("both", (intermediate_location[0], intermediate_location[1])):
+                    path_is_clear = False
+
             break
 
     return path_is_clear
-
-
-print(white_bishop2.legal_moves())
-
 
 
 
