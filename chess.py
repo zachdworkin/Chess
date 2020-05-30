@@ -228,30 +228,56 @@ class Pawn:
 
     def is_on_starting_square(self):
         is_on_starting_square = False
-        team = self.team
 
-        if team == "white":
+        if self.team == "white":
             if self.location[0] == 1:
                 is_on_starting_square = True
 
-        if team == "black":
+        if self.team == "black":
             if self.location[0] == 6:
                 is_on_starting_square = True
 
         return is_on_starting_square
 
+    def can_attack_diagonally(self, starting_location, ending_location):
+        can_attack_diagonally = False
+
+        if self.team == "white":
+            if ending_location[0] == starting_location[0] + 1 and ending_location[1] == starting_location[
+                1] + 1 and enemy_occupies_square("white", ending_location):
+                can_attack_diagonally = True
+            elif ending_location[0] == starting_location[0] + 1 and ending_location[1] == starting_location[
+                1] - 1 and enemy_occupies_square("white", ending_location):
+                can_attack_diagonally = True
+
+        if self.team == "black":
+            if ending_location[0] == starting_location[0] - 1 and ending_location[1] == starting_location[
+                1] + 1 and enemy_occupies_square("black", ending_location):
+                can_attack_diagonally = True
+            elif ending_location[0] == starting_location[0] - 1 and ending_location[1] == starting_location[
+                1] - 1 and enemy_occupies_square("black", ending_location):
+                can_attack_diagonally = True
+
+        return can_attack_diagonally
+
     def legal_moves(self):
         self.legal_moves = []
         possible_moves = self.possible_moves()
-        is_on_starting_square = self.is_on_starting_square()
 
-        if is_on_starting_square and path_is_clear(self.location, possible_moves[1]):
-            self.legal_moves.append(possible_moves[1])
+        if self.team == "white":
+            if not enemy_occupies_square(self.team, ((possible_moves[0][0], possible_moves[0][1]))):
+                self.legal_moves.append(possible_moves[0])
+                if self.is_on_starting_square() and not enemy_occupies_square(self.team, ((possible_moves[1][0], possible_moves[1][1]))) and possible_moves[1][0] == self.location[0] + 2:
+                    self.legal_moves.append(possible_moves[1])
 
-        possible_moves.pop(1)
+        elif self.team == "black":
+            if not enemy_occupies_square(self.team, ((possible_moves[0][0], possible_moves[0][1]))):
+                self.legal_moves.append(possible_moves[0])
+                if self.is_on_starting_square() and not enemy_occupies_square(self.team, ((possible_moves[1][0], possible_moves[1][1]))) and possible_moves[1][0] == self.location[0] - 2:
+                    self.legal_moves.append(possible_moves[1])
 
         for i in range(len(possible_moves)):
-            if square_is_open(self.team, possible_moves[i]) and path_is_clear(self.location, possible_moves[i]):
+            if self.can_attack_diagonally(self.location, possible_moves[i]):
                 self.legal_moves.append(possible_moves[i])
 
         return self.legal_moves
@@ -267,7 +293,7 @@ white_knight2 = Knight("white", (0, 6))
 white_rook2 = Rook("white", (0, 7))
 
 white_pawn0 = Pawn("white", (1, 0))
-white_pawn1 = Pawn("white", (1w, 0))
+white_pawn1 = Pawn("white", (1, 0))
 white_pawn2 = Pawn("white", (1, 2))
 white_pawn3 = Pawn("white", (1, 3))
 white_pawn4 = Pawn("white", (1, 4))
@@ -294,47 +320,49 @@ black_pawn6 = Pawn("black", (6, 6))
 black_pawn7 = Pawn("black", (6, 7))
 
 
+def white_squares_occupied():
+    white_squares_occupied = []
+    white_squares_occupied.append(white_rook1.location)
+    white_squares_occupied.append(white_rook2.location)
+    white_squares_occupied.append(white_knight1.location)
+    white_squares_occupied.append(white_knight2.location)
+    white_squares_occupied.append(white_bishop1.location)
+    white_squares_occupied.append(white_bishop2.location)
+    white_squares_occupied.append(white_queen.location)
+    white_squares_occupied.append(white_king.location)
+    white_squares_occupied.append(white_pawn0.location)
+    white_squares_occupied.append(white_pawn1.location)
+    white_squares_occupied.append(white_pawn2.location)
+    white_squares_occupied.append(white_pawn3.location)
+    white_squares_occupied.append(white_pawn4.location)
+    white_squares_occupied.append(white_pawn5.location)
+    white_squares_occupied.append(white_pawn6.location)
+    white_squares_occupied.append(white_pawn7.location)
+    return white_squares_occupied
+
+
+def black_squares_occupied():
+    black_squares_occupied = []
+    black_squares_occupied.append(black_rook1.location)
+    black_squares_occupied.append(black_rook2.location)
+    black_squares_occupied.append(black_knight1.location)
+    black_squares_occupied.append(black_knight2.location)
+    black_squares_occupied.append(black_bishop1.location)
+    black_squares_occupied.append(black_bishop2.location)
+    black_squares_occupied.append(black_queen.location)
+    black_squares_occupied.append(black_king.location)
+    black_squares_occupied.append(black_pawn0.location)
+    black_squares_occupied.append(black_pawn1.location)
+    black_squares_occupied.append(black_pawn2.location)
+    black_squares_occupied.append(black_pawn3.location)
+    black_squares_occupied.append(black_pawn4.location)
+    black_squares_occupied.append(black_pawn5.location)
+    black_squares_occupied.append(black_pawn6.location)
+    black_squares_occupied.append(black_pawn7.location)
+    return black_squares_occupied
+
+
 def square_is_open(team, location):
-    def white_squares_occupied():
-        white_squares_occupied = []
-        white_squares_occupied.append(white_rook1.location)
-        white_squares_occupied.append(white_rook2.location)
-        white_squares_occupied.append(white_knight1.location)
-        white_squares_occupied.append(white_knight2.location)
-        white_squares_occupied.append(white_bishop1.location)
-        white_squares_occupied.append(white_bishop2.location)
-        white_squares_occupied.append(white_queen.location)
-        white_squares_occupied.append(white_king.location)
-        white_squares_occupied.append(white_pawn0.location)
-        white_squares_occupied.append(white_pawn1.location)
-        white_squares_occupied.append(white_pawn2.location)
-        white_squares_occupied.append(white_pawn3.location)
-        white_squares_occupied.append(white_pawn4.location)
-        white_squares_occupied.append(white_pawn5.location)
-        white_squares_occupied.append(white_pawn6.location)
-        white_squares_occupied.append(white_pawn7.location)
-        return white_squares_occupied
-
-    def black_squares_occupied():
-        black_squares_occupied = []
-        black_squares_occupied.append(black_rook1.location)
-        black_squares_occupied.append(black_rook2.location)
-        black_squares_occupied.append(black_knight1.location)
-        black_squares_occupied.append(black_knight2.location)
-        black_squares_occupied.append(black_bishop1.location)
-        black_squares_occupied.append(black_bishop2.location)
-        black_squares_occupied.append(black_queen.location)
-        black_squares_occupied.append(black_king.location)
-        black_squares_occupied.append(black_pawn0.location)
-        black_squares_occupied.append(black_pawn1.location)
-        black_squares_occupied.append(black_pawn2.location)
-        black_squares_occupied.append(black_pawn3.location)
-        black_squares_occupied.append(black_pawn4.location)
-        black_squares_occupied.append(black_pawn5.location)
-        black_squares_occupied.append(black_pawn6.location)
-        black_squares_occupied.append(black_pawn7.location)
-        return black_squares_occupied
-
     square_is_open = True
     if team == "white":
         if location in white_squares_occupied():
@@ -349,6 +377,19 @@ def square_is_open(team, location):
             square_is_open = False
 
     return square_is_open
+
+
+def enemy_occupies_square(team, location):
+    enemy_occupies_square = False
+    if team == "black":
+        if location in white_squares_occupied():
+            enemy_occupies_square = True
+
+    if team == "white":
+        if location in black_squares_occupied():
+            enemy_occupies_square = True
+
+    return enemy_occupies_square
 
 
 def is_on_board(possible_moves):
@@ -385,10 +426,6 @@ def path_is_clear(starting_location, ending_location):
                 intermediate_location1 = (intermediate_location[0] + 1, intermediate_location[1])
                 intermediate_location = intermediate_location1
 
-            if intermediate_location[0] == ending_location[0]:
-                if not square_is_open("both", (intermediate_location[0], intermediate_location[1])):
-                    path_is_clear = False
-
             break
 
         elif starting_location[0] - i == ending_location[0] and starting_location[1] == ending_location[1]:
@@ -403,10 +440,6 @@ def path_is_clear(starting_location, ending_location):
 
                 intermediate_location1 = (intermediate_location[0] - 1, intermediate_location[1])
                 intermediate_location = intermediate_location1
-
-            if intermediate_location[0] == ending_location[0]:
-                if not square_is_open("both", (intermediate_location[0], intermediate_location[1])):
-                    path_is_clear = False
 
             break
 
@@ -423,10 +456,6 @@ def path_is_clear(starting_location, ending_location):
                 intermediate_location1 = (intermediate_location[0], intermediate_location[1] + 1)
                 intermediate_location = intermediate_location1
 
-            if intermediate_location[0] == ending_location[0]:
-                if not square_is_open("both", (intermediate_location[0], intermediate_location[1])):
-                    path_is_clear = False
-
             break
 
         elif starting_location[0] == ending_location[0] and starting_location[1] - i == ending_location[1]:
@@ -441,10 +470,6 @@ def path_is_clear(starting_location, ending_location):
 
                 intermediate_location1 = (intermediate_location[0], intermediate_location[1] - 1)
                 intermediate_location = intermediate_location1
-
-            if intermediate_location[0] == ending_location[0]:
-                if not square_is_open("both", (intermediate_location[0], intermediate_location[1])):
-                    path_is_clear = False
 
             break
 
@@ -461,10 +486,6 @@ def path_is_clear(starting_location, ending_location):
                 intermediate_location1 = (intermediate_location[0] + 1, intermediate_location[1] + 1)
                 intermediate_location = intermediate_location1
 
-            if intermediate_location[0] == ending_location[0]:
-                if not square_is_open("both", (intermediate_location[0], intermediate_location[1])):
-                    path_is_clear = False
-
             break
 
         elif starting_location[0] + i == ending_location[0] and starting_location[1] - i == ending_location[1]:
@@ -479,10 +500,6 @@ def path_is_clear(starting_location, ending_location):
 
                 intermediate_location1 = (intermediate_location[0] + 1, intermediate_location[1] - 1)
                 intermediate_location = intermediate_location1
-
-            if intermediate_location[0] == ending_location[0]:
-                if not square_is_open("both", (intermediate_location[0], intermediate_location[1])):
-                    path_is_clear = False
 
             break
 
@@ -499,10 +516,6 @@ def path_is_clear(starting_location, ending_location):
                 intermediate_location1 = (intermediate_location[0] - 1, intermediate_location[1] + 1)
                 intermediate_location = intermediate_location1
 
-            if intermediate_location[0] == ending_location[0]:
-                if not square_is_open("both", (intermediate_location[0], intermediate_location[1])):
-                    path_is_clear = False
-
             break
 
         elif starting_location[0] - i == ending_location[0] and starting_location[1] - i == ending_location[1]:
@@ -518,13 +531,11 @@ def path_is_clear(starting_location, ending_location):
                 intermediate_location1 = (intermediate_location[0] - 1, intermediate_location[1] - 1)
                 intermediate_location = intermediate_location1
 
-            if intermediate_location[0] == ending_location[0]:
-                if not square_is_open("both", (intermediate_location[0], intermediate_location[1])):
-                    path_is_clear = False
-
             break
 
     return path_is_clear
+
+
 
 
 
