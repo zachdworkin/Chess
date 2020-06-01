@@ -72,6 +72,21 @@ class King:
 
         return self.legal_moves
 
+    def is_check(self):
+        is_check = False
+        location = self.location
+        team = self.team
+
+        if team == "white":
+            if location in black_moveable_squares():
+                is_check = True
+
+        if team == "black":
+            if location in white_moveable_squares():
+                is_check = True
+
+        return is_check
+
 
 class Queen:
 
@@ -267,13 +282,15 @@ class Pawn:
         if self.team == "white":
             if not enemy_occupies_square(self.team, ((possible_moves[0][0], possible_moves[0][1]))):
                 self.legal_moves.append(possible_moves[0])
-                if self.is_on_starting_square() and not enemy_occupies_square(self.team, ((possible_moves[1][0], possible_moves[1][1]))) and possible_moves[1][0] == self.location[0] + 2:
+                if self.is_on_starting_square() and not enemy_occupies_square(self.team, (
+                (possible_moves[1][0], possible_moves[1][1]))) and possible_moves[1][0] == self.location[0] + 2:
                     self.legal_moves.append(possible_moves[1])
 
         elif self.team == "black":
             if not enemy_occupies_square(self.team, ((possible_moves[0][0], possible_moves[0][1]))):
                 self.legal_moves.append(possible_moves[0])
-                if self.is_on_starting_square() and not enemy_occupies_square(self.team, ((possible_moves[1][0], possible_moves[1][1]))) and possible_moves[1][0] == self.location[0] - 2:
+                if self.is_on_starting_square() and not enemy_occupies_square(self.team, (
+                (possible_moves[1][0], possible_moves[1][1]))) and possible_moves[1][0] == self.location[0] - 2:
                     self.legal_moves.append(possible_moves[1])
 
         for i in range(len(possible_moves)):
@@ -281,43 +298,6 @@ class Pawn:
                 self.legal_moves.append(possible_moves[i])
 
         return self.legal_moves
-
-
-white_rook1 = Rook("white", (0, 0))
-white_knight1 = Knight("white", (0, 1))
-white_bishop1 = Bishop("white", (0, 2))
-white_queen = Queen("white", (0, 3))
-white_king = King("white", (0, 4))
-white_bishop2 = Bishop("white", (0, 5))
-white_knight2 = Knight("white", (0, 6))
-white_rook2 = Rook("white", (0, 7))
-
-white_pawn0 = Pawn("white", (1, 0))
-white_pawn1 = Pawn("white", (1, 0))
-white_pawn2 = Pawn("white", (1, 2))
-white_pawn3 = Pawn("white", (1, 3))
-white_pawn4 = Pawn("white", (1, 4))
-white_pawn5 = Pawn("white", (1, 5))
-white_pawn6 = Pawn("white", (1, 6))
-white_pawn7 = Pawn("white", (1, 7))
-
-black_rook1 = Rook("black", (7, 0))
-black_knight1 = Rook("black", (7, 1))
-black_bishop1 = Rook("black", (7, 2))
-black_queen = Rook("black", (7, 3))
-black_king = Rook("black", (7, 4))
-black_bishop2 = Rook("black", (7, 5))
-black_knight2 = Rook("black", (7, 6))
-black_rook2 = Rook("black", (7, 7))
-
-black_pawn0 = Pawn("black", (6, 0))
-black_pawn1 = Pawn("black", (6, 1))
-black_pawn2 = Pawn("black", (6, 2))
-black_pawn3 = Pawn("black", (6, 3))
-black_pawn4 = Pawn("black", (6, 4))
-black_pawn5 = Pawn("black", (6, 5))
-black_pawn6 = Pawn("black", (6, 6))
-black_pawn7 = Pawn("black", (6, 7))
 
 
 def white_squares_occupied():
@@ -534,6 +514,97 @@ def path_is_clear(starting_location, ending_location):
             break
 
     return path_is_clear
+
+
+def white_moveable_squares():
+    white_moveable_squares = []
+    white_moveable_squares += white_rook1.legal_moves()
+    white_moveable_squares += white_rook2.legal_moves()
+    white_moveable_squares += white_knight1.legal_moves()
+    white_moveable_squares += white_knight2.legal_moves()
+    white_moveable_squares += white_bishop1.legal_moves()
+    white_moveable_squares += white_bishop2.legal_moves()
+    white_moveable_squares += white_queen.legal_moves()
+    white_moveable_squares += white_king.legal_moves()
+    white_moveable_squares += white_pawn0.legal_moves()
+    white_moveable_squares += white_pawn1.legal_moves()
+    white_moveable_squares += white_pawn2.legal_moves()
+    white_moveable_squares += white_pawn3.legal_moves()
+    white_moveable_squares += white_pawn4.legal_moves()
+    white_moveable_squares += white_pawn5.legal_moves()
+    white_moveable_squares += white_pawn6.legal_moves()
+    white_moveable_squares += white_pawn7.legal_moves()
+
+    white_moveable_squares_no_dupes = []
+    for i in white_moveable_squares:
+        if i not in white_moveable_squares_no_dupes:
+            white_moveable_squares_no_dupes.append(i)
+
+    return white_moveable_squares_no_dupes
+
+
+def black_moveable_squares():
+    black_moveable_squares = []
+    black_moveable_squares += black_rook1.legal_moves()
+    black_moveable_squares += black_rook2.legal_moves()
+    black_moveable_squares += black_knight1.legal_moves()
+    black_moveable_squares += black_knight2.legal_moves()
+    black_moveable_squares += black_bishop1.legal_moves()
+    black_moveable_squares += black_bishop2.legal_moves()
+    black_moveable_squares += black_queen.legal_moves()
+    black_moveable_squares += black_king.legal_moves()
+    black_moveable_squares += black_pawn0.legal_moves()
+    black_moveable_squares += black_pawn1.legal_moves()
+    black_moveable_squares += black_pawn2.legal_moves()
+    black_moveable_squares += black_pawn3.legal_moves()
+    black_moveable_squares += black_pawn4.legal_moves()
+    black_moveable_squares += black_pawn5.legal_moves()
+    black_moveable_squares += black_pawn6.legal_moves()
+    black_moveable_squares += black_pawn7.legal_moves()
+
+    black_moveable_squares_no_dupes = []
+    for i in black_moveable_squares:
+        if i not in black_moveable_squares_no_dupes:
+            black_moveable_squares_no_dupes.append(i)
+
+    return black_moveable_squares_no_dupes
+
+
+white_rook1 = Rook("white", (0, 0))
+white_knight1 = Knight("white", (0, 1))
+white_bishop1 = Bishop("white", (0, 2))
+white_queen = Queen("white", (0, 3))
+white_king = King("white", (0, 4))
+white_bishop2 = Bishop("white", (0, 5))
+white_knight2 = Knight("white", (0, 6))
+white_rook2 = Rook("white", (0, 7))
+
+white_pawn0 = Pawn("white", (1, 0))
+white_pawn1 = Pawn("white", (1, 0))
+white_pawn2 = Pawn("white", (1, 2))
+white_pawn3 = Pawn("white", (1, 3))
+white_pawn4 = Pawn("white", (1, 4))
+white_pawn5 = Pawn("white", (1, 5))
+white_pawn6 = Pawn("white", (1, 6))
+white_pawn7 = Pawn("white", (1, 7))
+
+black_rook1 = Rook("black", (7, 0))
+black_knight1 = Knight("black", (7, 1))
+black_bishop1 = Bishop("black", (7, 2))
+black_queen = Queen("black", (7, 3))
+black_king = King("black", (7, 4))
+black_bishop2 = Bishop("black", (7, 5))
+black_knight2 = Knight("black", (7, 6))
+black_rook2 = Rook("black", (7, 7))
+
+black_pawn0 = Pawn("black", (6, 0))
+black_pawn1 = Pawn("black", (6, 1))
+black_pawn2 = Pawn("black", (6, 2))
+black_pawn3 = Pawn("black", (6, 3))
+black_pawn4 = Pawn("black", (6, 4))
+black_pawn5 = Pawn("black", (6, 5))
+black_pawn6 = Pawn("black", (6, 6))
+black_pawn7 = Pawn("black", (6, 7))
 
 
 
